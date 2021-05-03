@@ -1,0 +1,36 @@
+<div class="col-md-12">
+    <h1>{{title}}</h1>
+    <hr>
+    <div class="alert alert-success col-mnd-5 mt-3" *ngIf="status == 'success'">
+        Te has identificado correctamente
+    </div>
+
+    <div class="alert alert-danger col-mnd-5 mt-3" *ngIf="status == 'error'">
+        No te haz podido identificar
+    </div>
+
+    
+    <!-- Formulario de registro -->
+    <form class="col-md-5 ml-0 pl-0" #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" name="email" class="form-control" #email="ngModel" 
+                [(ngModel)]="user.email"
+                required="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+            <small *ngIf="!email.valid && email.touched" class="invalid-feedback d-block">
+                El campo es requerido
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" name="password" class="form-control" #password="ngModel" 
+                [(ngModel)]="user.password"
+                required>
+            <small *ngIf="!password.valid && password.touched" class="invalid-feedback d-block">
+                El campo es requerido
+            </small>
+        </div>
+        <input type="submit" value="Identificarse" class="btn btn-success" [disabled]="loginForm.invalid">
+    </form>
+<div>

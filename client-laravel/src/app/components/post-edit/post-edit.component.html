@@ -1,0 +1,64 @@
+<div class="col-lg-5">
+	<h1 class="h1-strong">Editar post</h1>
+	<hr>
+	<p *ngIf="!is_edit">
+		Añade cambios al articulo del blog
+	</p>
+	<p *ngIf="is_edit && post">
+		Modifica el post {{ post.title }}
+	</p>
+
+	<div class="alert alert-success" *ngIf="status == 'success'">
+		Se han actualizado tus datos correctamente!!
+	</div>
+
+	<div class="alert alert-danger" *ngIf="status == 'error'">
+		No se han podido actualizar tus datos!!
+	</div>
+
+	<form #postEdit="ngForm" (ngSubmit)="onSubmit(postEdit)" class="col-md-5 ml-0 pl-0">
+		<div class="form-group">
+			<label for="title">Titulo</label>
+			<input type="text" name="title" #title="ngModel" [(ngModel)]="post.title" required class="form-control"/>
+			<span class="invalid-feedback d-block" *ngIf="!title.value && title.touched">
+				El titulo es obligatorio
+			</span>
+		</div>
+        <div class="form-group">
+			<label for="content">Contenido</label>
+			<textarea type="text" name="content" #content="ngModel" [(ngModel)]="post.content" required></textarea> 
+			<span class="invalid-feedback d-block" *ngIf="!content.value && content.touched">
+				El contenido es obligatorio
+			</span>
+		</div>
+        
+        <div class="form-group">
+			<label for="category_id">Categoria</label>
+			<select class="form-control" type="text" name="category" #category="ngModel" [(ngModel)]="post.category_id" required>
+                <option *ngFor="let category of categorias" value="{{ category.id }}">{{ category.name }}</option>
+            </select> 
+			<span class="invalid-feedback d-block" *ngIf="!category.value && category.touched">
+				La categoria es obligatoria
+			</span>
+		</div>
+		
+		<div class="form-group">
+			<label for="avatar">Avatar</label>
+			<div *ngIf="post.image">
+				<img src="{{ url + 'getImagePost/' + post.image }}" class="user-image-for-edit" />
+			</div>
+			<div class="user-image-for-edit" *ngIf="!post.image">
+				<img src="../../../assets/img/noimage.png" class="user-image-for-edit" />
+			</div>
+			<angular-file-uploader
+				[config]="afuConfig"
+				[resetUpload]=resetVar
+				(ApiResponse)="imageUpload($event)"
+			>
+			</angular-file-uploader>
+		</div>
+
+		<input type="submit" value="Guardar" class="btn btn-success" [disabled]="!postEdit.form.valid" />
+	</form>
+
+</div>
